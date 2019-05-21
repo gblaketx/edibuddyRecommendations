@@ -1,3 +1,7 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from collections import defaultdict
+
 class DataLoader:
     """
     ratings: Dataframe of recipe ratings by user id.
@@ -128,3 +132,6 @@ class DataLoader:
             user_id, recipe_id = k
             ratings_dict[user_id][recipe_id] = rating
         return ratings_dict
+
+    def get_recipe_info(self, recipe_id):
+        return self.recipes[recipe_id]
