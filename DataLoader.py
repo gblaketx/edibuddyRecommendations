@@ -103,7 +103,7 @@ class DataLoader:
         excluding the recipe in the holdout for that user.
         user_holdout: dict mapping from user_id to the recipe_id of the heldout recipe
         """
-        if user_id not in user_holdout:
+        if user_holdout is None or user_id not in user_holdout:
             return self.all_ratings[user_id]
 
         heldout_recipe_id = user_holdout[user_id]
@@ -122,7 +122,11 @@ class DataLoader:
         else:
             raise ValueError("Unexpected split: {}".format(split))
         
-        heldout_user_ids = recipe_holdout[recipe_id]
+        if recipe_holdout is None:
+            heldout_user_ids = frozenset()
+        else:
+            heldout_user_ids = recipe_holdout[recipe_id]
+
         raters = recipe_to_raters[recipe_id] - heldout_user_ids
         return {user_id: self.all_ratings[user_id][recipe_id] for user_id in raters}
     
